@@ -11,7 +11,7 @@
   "scripts": {
     "types": "cd client && bun tsc",
     "build:client": "cd client && bun run vite build",
-    "build:server": "bun build ./server/index.ts --outdir ./server/dist --target bun --external @lifeforge/server-utils --external zod"
+    "build:server": "bun build ./server/index.ts --outdir ./server/dist --target bun --external @lifeforge/server-utils --external zod --external jsdom"
   },
   "dependencies": {
     "jsdom": "^29.1.1",
