@@ -8,6 +8,12 @@ COPY . .
 RUN --mount=type=cache,target=/root/.bun/install/cache bun install --linker isolated
 RUN cd /app/packages/log && bun run build
 RUN cd /app/packages/server-utils && bun run build
+RUN set -e; for d in /app/modules/*; do \
+      if [ -f "$d/client/vite.config.ts" ]; then \
+        echo "Building module client $(basename "$d")"; \
+        (cd "$d" && DOCKER_BUILD=true bun run build:client); \
+      fi; \
+    done
 RUN cd /app/apps/web && node ./node_modules/vite/bin/vite.js build
 
 FROM nginx:alpine

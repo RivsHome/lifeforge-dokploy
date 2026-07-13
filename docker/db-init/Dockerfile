@@ -15,6 +15,7 @@ COPY --from=pocketbase /usr/local/bin/pocketbase /usr/local/bin/pocketbase
 WORKDIR /app
 COPY --from=builder /app/tools/dist/forge.js ./forge.js
 COPY --from=builder /schemas/apps/api/src/lib ./apps/api/src/lib
+COPY --from=builder /app/modules ./modules
 COPY --from=builder /app/packages/log/dist ./packages/log/dist
 COPY --from=builder /app/packages/log/package.json ./packages/log/package.json
 COPY --from=builder /app/packages/server-utils/dist ./packages/server-utils/dist

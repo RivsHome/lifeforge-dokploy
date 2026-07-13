@@ -2,5 +2,15 @@
   "name": "@lifeforge/modules",
   "private": true,
   "description": "LifeForge modules",
-  "dependencies": {}
+  "dependencies": {
+    "@lifeforge/lifeforge--calendar": "0.0.5",
+    "@lifeforge/lifeforge--todo-list": "0.0.5",
+    "@lifeforge/lifeforge--idea-box": "0.0.5",
+    "@lifeforge/lifeforge--achievements": "0.0.11",
+    "@lifeforge/lifeforge--moment-vault": "0.0.5",
+    "@lifeforge/lifeforge--movies": "0.0.5",
+    "@lifeforge/lifeforge--wallet": "0.0.5",
+    "@lifeforge/lifeforge--code-time": "0.0.5",
+    "@lifeforge/lifeforge--music": "0.0.5"
+  }
 }
