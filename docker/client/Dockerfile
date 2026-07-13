@@ -7,7 +7,7 @@ COPY . .
 RUN --mount=type=cache,target=/root/.bun/install/cache bun install --linker isolated
 RUN cd /app/packages/log && bun run build
 RUN cd /app/packages/server-utils && bun run build
-RUN cd /app/apps/web && bunx vite build
+RUN cd /app/apps/web && node ./node_modules/vite/bin/vite.js build
 
 FROM nginx:alpine
 RUN apk add --no-cache curl
