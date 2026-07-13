@@ -1,0 +1,38 @@
+{
+  "name": "@lifeforge/lifeforge--idea-box",
+  "displayName": "Idea Box",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lifeforge-app/lifeforge-module-ideaBox.git"
+  },
+  "version": "0.0.5",
+  "author": "Melvin Chia <melvinchia623600@gmail.com>",
+  "description": "Capture them before the inspiration flies away!",
+  "scripts": {
+    "types": "cd client && bun tsc",
+    "build:client": "cd client && bun run vite build",
+    "build:server": "bun build ./server/index.ts --outdir ./server/dist --target bun --external @lifeforge/server-utils --external zod"
+  },
+  "dependencies": {
+    "@headlessui/react": "^2.2.9",
+    "open-graph-scraper": "^6.10.0",
+    "react-columns": "^1.2.1",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-markdown": "^10.1.0",
+    "react-medium-image-zoom": "^5.4.0"
+  },
+  "devDependencies": {},
+  "lifeforge": {
+    "icon": "tabler:bulb",
+    "category": "Productivity"
+  },
+  "peerDependencies": {
+    "@lifeforge/api": "workspace:*",
+    "@lifeforge/server-utils": "workspace:*",
+    "@lifeforge/localization": "workspace:*",
+    "@lifeforge/ui": "workspace:*",
+    "@lifeforge/federation": "workspace:*",
+    "@lifeforge/configs": "workspace:*"
+  }
+}

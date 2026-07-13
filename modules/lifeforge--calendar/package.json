@@ -1,0 +1,49 @@
+{
+  "name": "@lifeforge/lifeforge--calendar",
+  "displayName": "Calendar",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lifeforge-app/lifeforge-module-calendar.git"
+  },
+  "version": "0.0.5",
+  "author": "Melvin Chia <melvinchia623600@gmail.com>",
+  "description": "Don't miss appointments with destiny (or the dentist).",
+  "scripts": {
+    "types": "cd client && bun tsc",
+    "build:client": "cd client && bun run vite build",
+    "build:server": "bun build ./server/index.ts --outdir ./server/dist --target bun --external @lifeforge/server-utils --external zod"
+  },
+  "dependencies": {
+    "node-ical": "^0.21.0",
+    "react-big-calendar": "^1.19.4",
+    "react-markdown": "^10.1.0",
+    "react-tooltip": "^5.30.0",
+    "rrule": "^2.8.1",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@types/react-big-calendar": "^1.16.3"
+  },
+  "lifeforge": {
+    "icon": "tabler:calendar",
+    "category": "Productivity",
+    "APIKeyAccess": {
+      "openai": {
+        "usage": "Create event from natural language and images using llm",
+        "required": false
+      },
+      "gcloud": {
+        "usage": "Retrieve location during natural language processing for event creation",
+        "required": false
+      }
+    }
+  },
+  "peerDependencies": {
+    "@lifeforge/api": "workspace:*",
+    "@lifeforge/server-utils": "workspace:*",
+    "@lifeforge/localization": "workspace:*",
+    "@lifeforge/ui": "workspace:*",
+    "@lifeforge/federation": "workspace:*",
+    "@lifeforge/configs": "workspace:*"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "@lifeforge/lifeforge--music",
+  "displayName": "Music",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lifeforge-app/lifeforge-module-music.git"
+  },
+  "version": "0.0.5",
+  "author": "Melvin Chia <melvinchia623600@gmail.com>",
+  "description": "The personal soundtrack to the best moments of your life.",
+  "scripts": {
+    "types": "cd client && bun tsc",
+    "build:client": "cd client && bun run vite build",
+    "build:server": "bun build ./server/index.ts --outdir ./server/dist --target bun --external @lifeforge/server-utils --external zod"
+  },
+  "dependencies": {
+    "human-number": "^2.0.6"
+  },
+  "devDependencies": {
+    "@types/human-number": "^1.0.2"
+  },
+  "lifeforge": {
+    "icon": "tabler:music",
+    "category": "Storage"
+  },
+  "peerDependencies": {
+    "@lifeforge/api": "workspace:*",
+    "@lifeforge/server-utils": "workspace:*",
+    "@lifeforge/localization": "workspace:*",
+    "@lifeforge/ui": "workspace:*",
+    "@lifeforge/federation": "workspace:*",
+    "@lifeforge/configs": "workspace:*"
+  }
+}

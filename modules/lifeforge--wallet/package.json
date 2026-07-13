@@ -1,0 +1,52 @@
+{
+  "name": "@lifeforge/lifeforge--wallet",
+  "displayName": "Wallet",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lifeforge-app/lifeforge-module-wallet.git"
+  },
+  "version": "0.0.5",
+  "author": "Melvin Chia <melvinchia623600@gmail.com>",
+  "description": "Become your own financial superhero.",
+  "scripts": {
+    "types": "cd client && bun tsc",
+    "build:client": "cd client && bun run vite build",
+    "build:server": "bun build ./server/index.ts --outdir ./server/dist --target bun --external @lifeforge/server-utils --external zod"
+  },
+  "dependencies": {
+    "@vis.gl/react-google-maps": "^1.5.5",
+    "chart.js": "^4.5.0",
+    "moment": "^2.30.1",
+    "moment-range": "^4.0.2",
+    "react-chartjs-2": "^5.3.0",
+    "react-to-print": "^3.1.1",
+    "react-virtualized": "^9.22.6",
+    "recharts": "^2.15.0",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@types/react-virtualized": "^9.22.3"
+  },
+  "lifeforge": {
+    "icon": "tabler:currency-dollar",
+    "category": "Finance",
+    "APIKeyAccess": {
+      "deepseek": {
+        "usage": "Create transactions from natural language and images using llm",
+        "required": false
+      },
+      "gcloud": {
+        "usage": "To fetch location from google map api",
+        "required": false
+      }
+    }
+  },
+  "peerDependencies": {
+    "@lifeforge/api": "workspace:*",
+    "@lifeforge/server-utils": "workspace:*",
+    "@lifeforge/localization": "workspace:*",
+    "@lifeforge/ui": "workspace:*",
+    "@lifeforge/federation": "workspace:*",
+    "@lifeforge/configs": "workspace:*"
+  }
+}
