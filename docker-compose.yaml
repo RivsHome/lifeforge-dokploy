@@ -1,20 +1,22 @@
+name: lifeforge
+
 services:
   db:
     build:
       context: .
       dockerfile: docker/db/Dockerfile
-    container_name: lifeforge-db
     restart: unless-stopped
-    env_file:
-      - ./env/.env.docker
     environment:
-      - DOCKER_MODE=true
-      - PB_BINARY_PATH=/usr/local/bin/pocketbase
-      - PB_DIR=/pb_data
+      DOCKER_MODE: "true"
+      PB_BINARY_PATH: /usr/local/bin/pocketbase
+      PB_DIR: /pb_data
+      MASTER_KEY: ${MASTER_KEY:?MASTER_KEY must be set in Dokploy}
+      PB_EMAIL: ${PB_EMAIL:?PB_EMAIL must be set in Dokploy}
+      PB_PASSWORD: ${PB_PASSWORD:?PB_PASSWORD must be set in Dokploy}
     expose:
-      - '8090'
+      - "8090"
     volumes:
-      - ./database/pb_data:/pb_data
+      - lifeforge_pb_data:/pb_data
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:8090/api/health || exit 1
       interval: 5s
@@ -26,15 +28,17 @@ services:
     build:
       context: .
       dockerfile: docker/db-init/Dockerfile
-    container_name: lifeforge-db-init
-    env_file:
-      - ./env/.env.docker
+    restart: "no"
     environment:
-      - DOCKER_MODE=true
-      - PB_DIR=/pb_data
-      - PB_HOST=http://0.0.0.0:8090
+      DOCKER_MODE: "true"
+      PB_DIR: /pb_data
+      PB_HOST: http://db:8090
+      PB_BINARY_PATH: /usr/local/bin/pocketbase
+      MASTER_KEY: ${MASTER_KEY:?MASTER_KEY must be set in Dokploy}
+      PB_EMAIL: ${PB_EMAIL:?PB_EMAIL must be set in Dokploy}
+      PB_PASSWORD: ${PB_PASSWORD:?PB_PASSWORD must be set in Dokploy}
     volumes:
-      - ./database/pb_data:/pb_data
+      - lifeforge_pb_data:/pb_data
       - ./modules:/app/modules
       - ./locales:/app/locales
     depends_on:
@@ -45,16 +49,16 @@ services:
     build:
       context: .
       dockerfile: docker/server/Dockerfile
-    container_name: lifeforge-server
     restart: unless-stopped
-    env_file:
-      - ./env/.env.docker
     environment:
-      - DOCKER_MODE=true
-      - NODE_ENV=production
-      - PB_HOST=http://db:8090
+      DOCKER_MODE: "true"
+      NODE_ENV: production
+      PB_HOST: http://db:8090
+      MASTER_KEY: ${MASTER_KEY:?MASTER_KEY must be set in Dokploy}
+      PB_EMAIL: ${PB_EMAIL:?PB_EMAIL must be set in Dokploy}
+      PB_PASSWORD: ${PB_PASSWORD:?PB_PASSWORD must be set in Dokploy}
     expose:
-      - '3636'
+      - "3636"
     volumes:
       - ./modules:/lifeforge/modules
       - ./locales:/lifeforge/locales
@@ -67,11 +71,28 @@ services:
       context: .
       dockerfile: docker/client/Dockerfile
       args:
-        - VITE_API_HOST=/api
-    container_name: lifeforge-client
+        VITE_API_HOST: /api
     restart: unless-stopped
-    ports:
-      - '80:80'
+    expose:
+      - "80"
     depends_on:
       server:
         condition: service_started
+    networks:
+      - default
+      - dokploy-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=dokploy-network"
+      - "traefik.http.routers.lifeforge.rule=Host(`${LIFEFORGE_DOMAIN}`)"
+      - "traefik.http.routers.lifeforge.entrypoints=websecure"
+      - "traefik.http.routers.lifeforge.tls=true"
+      - "traefik.http.routers.lifeforge.tls.certresolver=letsencrypt"
+      - "traefik.http.services.lifeforge.loadbalancer.server.port=80"
+
+networks:
+  dokploy-network:
+    external: true
+
+volumes:
+  lifeforge_pb_data:
