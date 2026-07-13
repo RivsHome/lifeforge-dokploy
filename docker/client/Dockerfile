@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
 FROM oven/bun:alpine AS builder
+RUN apk add --no-cache nodejs npm
 ARG VITE_API_HOST=/api
 ENV VITE_API_HOST=$VITE_API_HOST
 WORKDIR /app
