@@ -49,7 +49,7 @@ function ModifyTaskDrawer() {
 
   const [innerOpenType, setInnerOpenType] = useState<
     'create' | 'update' | null
-  >(openType)
+  >(null)
 
   const summaryInputRef = useRef<HTMLInputElement>(null)
   const ref = useRef<HTMLInputElement>(null)
@@ -88,8 +88,10 @@ function ModifyTaskDrawer() {
       await queryClient.invalidateQueries({
         queryKey: ['todoList']
       })
-    } catch {
-      toast.error('Error')
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : 'Unable to save the task.'
+      )
     }
   }
 
@@ -134,13 +136,11 @@ function ModifyTaskDrawer() {
   }, [selectedTask])
 
   useEffect(() => {
-    setTimeout(() => {
-      setInnerOpenType(openType)
+    setInnerOpenType(openType)
 
-      if (summaryInputRef.current) {
-        summaryInputRef.current.focus()
-      }
-    }, 5)
+    if (openType !== null) {
+      requestAnimationFrame(() => summaryInputRef.current?.focus())
+    }
   }, [openType])
 
   useEffect(() => {
