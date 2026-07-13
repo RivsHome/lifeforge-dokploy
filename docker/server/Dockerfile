@@ -11,6 +11,10 @@ RUN set -e; for d in /lifeforge/modules/*; do \
         echo "Building module server $(basename "$d")"; \
         (cd "$d" && bun run build:server); \
       fi; \
+      if [ -f "$d/client/vite.config.ts" ]; then \
+        echo "Building module client $(basename "$d")"; \
+        (cd "$d" && DOCKER_BUILD=true bun run build:client); \
+      fi; \
     done
 RUN cd /lifeforge/apps/api && bun build ./src/index.ts --target bun --minify --production --outfile=./dist/server.js
 RUN bun -e "const pkg = require('./apps/api/package.json'); delete pkg.dependencies['@lifeforge/log']; delete pkg.dependencies['@lifeforge/server-utils']; delete pkg.devDependencies; pkg.dependencies = { ...(pkg.dependencies || {}), zod: '4.3.5', jsdom: '^29.1.1' }; require('fs').writeFileSync('./apps/api/package.docker.json', JSON.stringify(pkg, null, 2))"
