@@ -13,7 +13,7 @@ RUN set -e; for d in /lifeforge/modules/*; do \
       fi; \
     done
 RUN cd /lifeforge/apps/api && bun build ./src/index.ts --target bun --minify --production --outfile=./dist/server.js
-RUN bun -e "const pkg = require('./apps/api/package.json'); delete pkg.dependencies['@lifeforge/log']; delete pkg.dependencies['@lifeforge/server-utils']; delete pkg.devDependencies; require('fs').writeFileSync('./apps/api/package.docker.json', JSON.stringify(pkg, null, 2))"
+RUN bun -e "const pkg = require('./apps/api/package.json'); delete pkg.dependencies['@lifeforge/log']; delete pkg.dependencies['@lifeforge/server-utils']; delete pkg.devDependencies; pkg.dependencies = { ...(pkg.dependencies || {}), zod: '4.3.5' }; require('fs').writeFileSync('./apps/api/package.docker.json', JSON.stringify(pkg, null, 2))"
 
 FROM oven/bun:alpine AS production
 RUN apk add --no-cache curl wget
@@ -24,6 +24,7 @@ COPY --from=builder /lifeforge/packages/log/package.json ./packages/log/package.
 COPY --from=builder /lifeforge/packages/server-utils/dist ./packages/server-utils/dist
 COPY --from=builder /lifeforge/packages/server-utils/package.json ./packages/server-utils/package.json
 COPY --from=builder /lifeforge/modules ./modules
+COPY --from=builder /lifeforge/locales ./locales
 COPY --from=builder /lifeforge/apps/api/package.docker.json ./package.json
 RUN bun install --production
 COPY docker/server/entrypoint.sh /entrypoint.sh
